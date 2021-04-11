@@ -1,37 +1,22 @@
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, Text, View, Image, Button} from 'react-native';
 import axios from 'axios';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [],
+const App = () => {
+  const [data, changeData] = useState([]);
+  const [currentPage, changeCurrentPage] = useState(1);
+
+  useEffect(() => {
+    const getData = async () => {
+      const responseData = await axios(
+        `https://reqres.in/api/users?page=${currentPage}`,
+      );
+      changeData(dataState => [...dataState, ...responseData.data.data]);
     };
-    this.currentPage = 1;
-  }
+    getData();
+  }, [currentPage]);
 
-  componentDidMount() {
-    this.getData();
-  }
-
-  getData() {
-    axios
-      .get(`https://reqres.in/api/users?page=${this.currentPage}`)
-      .then(res => {
-        this.setState(state => {
-          state.data.push(...res.data.data);
-          return state.data;
-        });
-      });
-  }
-
-  getNextPage() {
-    this.currentPage++;
-    this.getData();
-  }
-
-  renderItem = ({item}) => {
+  const renderItem = ({item}) => {
     return (
       <View style={styles.listItem}>
         <View style={styles.imageWrap}>
@@ -47,21 +32,22 @@ class App extends Component {
     );
   };
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Users List</Text>
-        <FlatList
-          data={this.state.data}
-          renderItem={this.renderItem}
-          keyExtractor={item => item.id}
-          style={styles.list}
-        />
-        <Button onPress={() => this.getNextPage()} title="Show More" />
-      </View>
-    );
-  }
-}
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Users List</Text>
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        style={styles.list}
+      />
+      <Button
+        onPress={() => changeCurrentPage(currentPage + 1)}
+        title="Show More"
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   title: {
