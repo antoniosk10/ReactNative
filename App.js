@@ -1,25 +1,35 @@
 import React, {Component} from 'react';
 import {FlatList, StyleSheet, Text, View, Image, Button} from 'react-native';
+import axios from 'axios';
 
 class App extends Component {
-  state = {
-    data: [
-      {
-        id: 1,
-        name: 'Lisa',
-        surname: 'Ivanova',
-        avatar: 'https://reqres.in/img/faces/1-image.jpg',
-        email: 'asd@asd.eu',
-      },
-      {
-        id: 2,
-        name: 'Lisa',
-        surname: 'Ivanova',
-        avatar: 'https://reqres.in/img/faces/1-image.jpg',
-        email: 'asd@asd.eu',
-      },
-    ],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+    };
+    this.currentPage = 1;
+  }
+
+  componentDidMount() {
+    this.getData();
+  }
+
+  getData() {
+    axios
+      .get(`https://reqres.in/api/users?page=${this.currentPage}`)
+      .then(res => {
+        this.setState(state => {
+          state.data.push(...res.data.data);
+          return state.data;
+        });
+      });
+  }
+
+  getNextPage() {
+    this.currentPage++;
+    this.getData();
+  }
 
   renderItem = ({item}) => {
     return (
@@ -28,7 +38,9 @@ class App extends Component {
           <Image style={styles.image} source={{uri: item.avatar}} />
         </View>
         <View>
-          <Text style={styles.name}>{`${item.name} ${item.surname}`}</Text>
+          <Text style={styles.name}>
+            {`${item.first_name} ${item.last_name}`}
+          </Text>
           <Text>{item.email}</Text>
         </View>
       </View>
@@ -45,7 +57,7 @@ class App extends Component {
           keyExtractor={item => item.id}
           style={styles.list}
         />
-        <Button title="Show More" />
+        <Button onPress={() => this.getNextPage()} title="Show More" />
       </View>
     );
   }
