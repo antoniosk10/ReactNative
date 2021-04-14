@@ -1,92 +1,37 @@
-import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, Text, View, Image, Button} from 'react-native';
-import axios from 'axios';
+import React from 'react';
+import List from './src/components/List';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/Feather';
 
-const App = () => {
-  const [data, changeData] = useState([]);
-  const [currentPage, changeCurrentPage] = useState(1);
+const Tab = createBottomTabNavigator();
 
-  useEffect(() => {
-    const getData = async () => {
-      const responseData = await axios(
-        `https://reqres.in/api/users?page=${currentPage}`,
-      );
-      changeData(dataState => [...dataState, ...responseData.data.data]);
-    };
-    getData();
-  }, [currentPage]);
-
-  const renderItem = ({item}) => {
-    return (
-      <View style={styles.listItem}>
-        <View style={styles.imageWrap}>
-          <Image style={styles.image} source={{uri: item.avatar}} />
-        </View>
-        <View>
-          <Text style={styles.name}>
-            {`${item.first_name} ${item.last_name}`}
-          </Text>
-          <Text>{item.email}</Text>
-        </View>
-      </View>
-    );
-  };
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Users List</Text>
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        style={styles.list}
+const App = () => (
+  <NavigationContainer>
+    <Tab.Navigator
+      initialRouteName="UserList"
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
+          return <Icon name={'align-justify'} size={20} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: '#1fcbed',
+        inactiveTintColor: 'gray',
+        labelStyle: {
+          fontSize: 16,
+        },
+      }}>
+      <Tab.Screen
+        name="UserList"
+        children={() => <List typeData={'users'} />}
       />
-      <Button
-        onPress={() => changeCurrentPage(currentPage + 1)}
-        title="Show More"
+      <Tab.Screen
+        name="UnknownList"
+        children={() => <List typeData={'unknown'} />}
       />
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  title: {
-    paddingBottom: 10,
-    paddingTop: 10,
-    fontSize: 30,
-    textAlign: 'center',
-    color: '#fff',
-    borderBottomColor: '#e0e0e0',
-    borderBottomWidth: 2,
-  },
-  container: {
-    backgroundColor: '#5ecfff',
-    height: '100%',
-  },
-  imageWrap: {
-    width: 60,
-    height: 60,
-    marginRight: 10,
-    borderRadius: 30,
-    overflow: 'hidden',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-  listItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    padding: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-  },
-  name: {
-    fontSize: 18,
-  },
-  list: {
-    padding: 10,
-  },
-});
+    </Tab.Navigator>
+  </NavigationContainer>
+);
 
 export default App;
