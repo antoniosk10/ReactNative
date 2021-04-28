@@ -1,38 +1,47 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {FlatList, StyleSheet, Text, View, Button} from 'react-native';
 import UserItem from './UserItem';
 import UnknownItem from './UnknownItem';
 import {useSelector, useDispatch} from 'react-redux';
-import axios from 'axios';
+import {
+  loadUsers,
+  nextPageUsers,
+  loadUnknown,
+  nextPageUnknown,
+} from '../redux/actions/actions';
 
 const List = ({typeData}) => {
-  const [currentPage, changeCurrentPage] = useState(1);
-  const usersList = useSelector(state => state.UsersList);
-  const unknownList = useSelector(state => state.UnknownList);
+  const currentPage = useSelector(state => {
+    return typeData === 'users' ? state.pageUsersList : state.pageUnknownList;
+  });
+  const listData = useSelector(state => {
+    return typeData === 'users' ? state.usersList : state.unknownList;
+  });
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const getData = async () => {
-      const responseData = await axios(
-        `https://reqres.in/api/${typeData}?page=${currentPage}`,
-      );
-      dispatch({type: `update/${typeData}`, payload: responseData.data.data});
-    };
-    getData();
-  }, [typeData, currentPage, dispatch]);
+    if (typeData === 'users') {
+      dispatch(loadUsers());
+    } else {
+      dispatch(loadUnknown());
+    }
+  }, [currentPage, dispatch, typeData]);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{typeData} List</Text>
       <FlatList
-        data={typeData === 'users' ? usersList : unknownList}
+        data={listData}
         renderItem={typeData === 'users' ? UserItem : UnknownItem}
         keyExtractor={item => `${typeData}_${item.id}`}
         style={styles.list}
         ListFooterComponent={
           <Button
             onPress={() => {
-              changeCurrentPage(currentPage + 1);
+              console.log(typeData);
+              typeData === 'users'
+                ? dispatch(nextPageUsers())
+                : dispatch(nextPageUnknown());
             }}
             title="Show More"
           />
