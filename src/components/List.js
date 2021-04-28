@@ -1,34 +1,39 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, Text, View, Button} from 'react-native';
-import axios from 'axios';
 import UserItem from './UserItem';
 import UnknownItem from './UnknownItem';
+import {useSelector, useDispatch} from 'react-redux';
+import axios from 'axios';
 
-const UsersList = ({typeData}) => {
-  const [data, changeData] = useState([]);
+const List = ({typeData}) => {
   const [currentPage, changeCurrentPage] = useState(1);
+  const usersList = useSelector(state => state.UsersList);
+  const unknownList = useSelector(state => state.UnknownList);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getData = async () => {
       const responseData = await axios(
         `https://reqres.in/api/${typeData}?page=${currentPage}`,
       );
-      changeData(dataState => [...dataState, ...responseData.data.data]);
+      dispatch({type: `update/${typeData}`, payload: responseData.data.data});
     };
     getData();
-  }, [currentPage, typeData]);
+  }, [typeData, currentPage, dispatch]);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{typeData} List</Text>
       <FlatList
-        data={data}
+        data={typeData === 'users' ? usersList : unknownList}
         renderItem={typeData === 'users' ? UserItem : UnknownItem}
         keyExtractor={item => `${typeData}_${item.id}`}
         style={styles.list}
         ListFooterComponent={
           <Button
-            onPress={() => changeCurrentPage(currentPage + 1)}
+            onPress={() => {
+              changeCurrentPage(currentPage + 1);
+            }}
             title="Show More"
           />
         }
@@ -58,4 +63,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UsersList;
+export default List;
