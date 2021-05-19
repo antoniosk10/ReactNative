@@ -1,0 +1,6 @@
+export const UPDATE_USERS = 'UPDATE_USERS';
+export const UPDATE_UNKNOWN = 'UPDATE_UNKNOWN';
+export const LOAD_USERS = 'LOAD_USERS';
+export const LOAD_UNKNOWN = 'LOAD_UNKNOWN';
+export const NEXT_PAGE_USERS = 'NEXT_PAGE_USERS';
+export const NEXT_PAGE_UNKNOWN = 'NEXT_PAGE_UNKNOWN';
