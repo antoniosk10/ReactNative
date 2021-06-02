@@ -1,41 +1,27 @@
 import React from 'react';
-import List from './src/components/List';
+import PageList from './src/components/PageList';
 import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/Feather';
 import {Provider} from 'react-redux';
 import store from './src/redux/store/store';
+import {createStackNavigator} from '@react-navigation/stack';
+import PageAuth from './src/components/PageAuth';
 
-const Tab = createBottomTabNavigator();
-
-const App = () => (
-  <Provider store={store}>
-    <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="UserList"
-        screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
-            return <Icon name={'align-justify'} size={20} color={color} />;
-          },
-        })}
-        tabBarOptions={{
-          activeTintColor: '#1fcbed',
-          inactiveTintColor: 'gray',
-          labelStyle: {
-            fontSize: 16,
-          },
-        }}>
-        <Tab.Screen
-          name="UserList"
-          children={() => <List typeData={'users'} />}
-        />
-        <Tab.Screen
-          name="UnknownList"
-          children={() => <List typeData={'unknown'} />}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
-  </Provider>
-);
+const Stack = createStackNavigator();
+const App = () => {
+  return (
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName={'Auth'}
+          screenOptions={{
+            headerShown: false,
+          }}>
+          <Stack.Screen name="Auth" component={PageAuth} />
+          <Stack.Screen name="List" component={PageList} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
+  );
+};
 
 export default App;
