@@ -1,18 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Login from './Login';
 import Registration from './Registration';
-import {getItemStorage} from './../api/AsyncStorage';
 
-const token = getItemStorage('token');
-
-const PageAuth = ({navigation}) => {
+const PageAuth = () => {
   const [page, changePage] = useState('login');
-
-  useEffect(() => {
-    token.then(data => (data ? navigation.navigate('List') : null));
-  }, [navigation]);
 
   return (
     <LinearGradient

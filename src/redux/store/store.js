@@ -9,6 +9,8 @@ const initialStore = {
   unknownList: [],
   pageUsersList: 1,
   pageUnknownList: 1,
+  isEndUsersList: false,
+  isEndUnknownList: false,
 };
 
 let store = createStore(reducer, initialStore, applyMiddleware(sagaMiddleware));

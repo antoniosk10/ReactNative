@@ -7,10 +7,16 @@ const Tab = createBottomTabNavigator();
 
 const PageList = () => (
   <Tab.Navigator
-    initialRouteName="UserList"
+    initialRouteName="My Friends"
     screenOptions={({route}) => ({
       tabBarIcon: ({focused, color, size}) => {
-        return <Icon name={'align-justify'} size={20} color={color} />;
+        return (
+          <Icon
+            name={route.name === 'My Friends' ? 'users' : 'command'}
+            size={20}
+            color={color}
+          />
+        );
       },
     })}
     tabBarOptions={{
@@ -20,9 +26,12 @@ const PageList = () => (
         fontSize: 16,
       },
     }}>
-    <Tab.Screen name="UserList" children={() => <List typeData={'users'} />} />
     <Tab.Screen
-      name="UnknownList"
+      name="My Friends"
+      children={() => <List typeData={'users'} />}
+    />
+    <Tab.Screen
+      name="My Colors"
       children={() => <List typeData={'unknown'} />}
     />
   </Tab.Navigator>
