@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
     paddingHorizontal: 10,
+    color: '#000',
   },
   btn: {
     marginBottom: 10,

@@ -11,6 +11,8 @@ const initialStore = {
   pageUnknownList: 1,
   isEndUsersList: false,
   isEndUnknownList: false,
+  fieldsUsers: ['first_name', 'last_name', 'email'],
+  fieldsUnknown: ['color', 'name', 'pantone_value', 'year'],
 };
 
 let store = createStore(reducer, initialStore, applyMiddleware(sagaMiddleware));
