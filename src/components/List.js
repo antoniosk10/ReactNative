@@ -17,6 +17,9 @@ const List = ({typeData}) => {
   const listData = useSelector(state => {
     return typeData === 'users' ? state.usersList : state.unknownList;
   });
+  const isHideBtn = useSelector(state => {
+    return typeData === 'users' ? state.isEndUsersList : state.isEndUnknownList;
+  });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,22 +32,25 @@ const List = ({typeData}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{typeData} List</Text>
+      <Text style={styles.title}>
+        {typeData === 'users' ? 'My Friends' : 'My Colors'}
+      </Text>
       <FlatList
         data={listData}
         renderItem={typeData === 'users' ? UserItem : UnknownItem}
         keyExtractor={item => `${typeData}_${item.id}`}
         style={styles.list}
         ListFooterComponent={
-          <Button
-            onPress={() => {
-              console.log(typeData);
-              typeData === 'users'
-                ? dispatch(nextPageUsers())
-                : dispatch(nextPageUnknown());
-            }}
-            title="Show More"
-          />
+          isHideBtn ? null : (
+            <Button
+              onPress={() => {
+                typeData === 'users'
+                  ? dispatch(nextPageUsers())
+                  : dispatch(nextPageUnknown());
+              }}
+              title="Show More"
+            />
+          )
         }
       />
     </View>
@@ -67,6 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   list: {
+    flex: 1,
     paddingLeft: 20,
     paddingRight: 20,
   },

@@ -1,29 +1,27 @@
 import {LOAD_USERS, LOAD_UNKNOWN} from './../constants';
 import {put, takeEvery, call, all} from 'redux-saga/effects';
-import axios from 'axios';
-import {putUsers, putUnknown} from './actions/actions';
-import store from './store/store';
-
-function fetchDataUsers() {
-  return axios(
-    `https://reqres.in/api/users?page=${store.getState().pageUsersList}`,
-  );
-}
-
-function fetchDataUnknown() {
-  return axios(
-    `https://reqres.in/api/unknown?page=${store.getState().pageUnknownList}`,
-  );
-}
+import {
+  putUsers,
+  putUnknown,
+  endPageUsers,
+  endPageUnknown,
+} from './actions/actions';
+import {fetchDataUsers, fetchDataUnknown} from './../api/FetchData';
 
 export function* workerUsers() {
   const data = yield call(fetchDataUsers);
   yield put(putUsers(data.data.data));
+  if (data.data.page === data.data.total_pages) {
+    yield put(endPageUsers());
+  }
 }
 
 export function* workerUnknown() {
   const data = yield call(fetchDataUnknown);
   yield put(putUnknown(data.data.data));
+  if (data.data.page === data.data.total_pages) {
+    yield put(endPageUnknown());
+  }
 }
 
 export function* watcherUsers() {

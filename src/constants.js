@@ -4,3 +4,5 @@ export const LOAD_USERS = 'LOAD_USERS';
 export const LOAD_UNKNOWN = 'LOAD_UNKNOWN';
 export const NEXT_PAGE_USERS = 'NEXT_PAGE_USERS';
 export const NEXT_PAGE_UNKNOWN = 'NEXT_PAGE_UNKNOWN';
+export const END_PAGE_USERS = 'END_PAGE_USERS';
+export const END_PAGE_UNKNOWN = 'END_PAGE_UNKNOWN';
