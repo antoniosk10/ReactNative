@@ -57,7 +57,7 @@ const reducer = (state, action) => {
             if (action.payload.typeList === 'usersList') {
               return {
                 id: el.id,
-                avatar: el.avatar,
+                avatar: action.payload.data.avatar,
                 first_name: action.payload.data.first_name,
                 last_name: action.payload.data.last_name,
                 email: action.payload.data.email,
@@ -65,7 +65,7 @@ const reducer = (state, action) => {
             } else {
               return {
                 id: el.id,
-                color: el.color,
+                color: action.payload.data.color,
                 name: action.payload.data.name,
                 pantone_value: action.payload.data.pantone_value,
                 year: action.payload.data.year,
@@ -80,19 +80,18 @@ const reducer = (state, action) => {
         action.payload.typeList === 'usersList'
           ? {
               id: state.usersList[state.usersList.length - 1].id + 1,
-              avatar: state.usersList[0].avatar,
+              avatar: action.payload.data.avatar,
               first_name: action.payload.data.first_name,
               last_name: action.payload.data.last_name,
               email: action.payload.data.email,
             }
           : {
               id: state.unknownList[state.unknownList.length - 1].id + 1,
-              color: state.unknownList[0].color,
+              color: action.payload.data.color,
               name: action.payload.data.name,
               pantone_value: action.payload.data.pantone_value,
               year: action.payload.data.year,
             };
-
       return {
         ...state,
         [action.payload.typeList]: [...state[action.payload.typeList], newItem],

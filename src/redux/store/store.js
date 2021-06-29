@@ -11,7 +11,7 @@ const initialStore = {
   pageUnknownList: 1,
   isEndUsersList: false,
   isEndUnknownList: false,
-  fieldsUsers: ['first_name', 'last_name', 'email'],
+  fieldsUsers: ['avatar', 'first_name', 'last_name', 'email'],
   fieldsUnknown: ['color', 'name', 'pantone_value', 'year'],
 };
 

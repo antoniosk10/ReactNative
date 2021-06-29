@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,11 +6,15 @@ import {
   TouchableOpacity,
   Modal,
   TextInput,
+  Image,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useForm, Controller} from 'react-hook-form';
 import {editItem, addItem} from './../redux/actions/actions';
 import {DEFAULT_MODAL_SETTINGS} from './../constants';
+import IMAGE_NO_PHOTO from './../assets/image/no-photo.png';
+import Icon from 'react-native-vector-icons/Feather';
+import DocumentPicker from 'react-native-document-picker';
 
 const ModalWindow = ({
   typeList,
@@ -29,16 +33,30 @@ const ModalWindow = ({
     }
     changeModalWindow(DEFAULT_MODAL_SETTINGS);
   };
+  const imageNoPhotoUri = Image.resolveAssetSource(IMAGE_NO_PHOTO).uri;
+  const [newAvatar, changeAvatar] = useState(imageNoPhotoUri);
 
   useEffect(() => {
     fields.map(el => {
       if (item) {
-        setValue(el, item[el].toString());
+        if (el === 'avatar') {
+          setValue(el, newAvatar);
+        } else {
+          setValue(el, item[el].toString());
+        }
       } else {
-        setValue(el, '');
+        if (el === 'avatar') {
+          setValue(el, newAvatar);
+        } else {
+          setValue(el, '');
+        }
       }
     });
   });
+
+  useEffect(() => {
+    changeAvatar(item ? item.avatar : imageNoPhotoUri);
+  }, [changeAvatar, item, imageNoPhotoUri]);
 
   return (
     <Modal
@@ -51,14 +69,33 @@ const ModalWindow = ({
       <View style={styles.modalWrap}>
         <View style={styles.modal}>
           <Text style={styles.title}>{item ? 'Edit Item' : 'Add Item'}</Text>
-          {console.log(fields)}
+          {typeList === 'usersList' ? (
+            <View style={styles.imageWrap}>
+              <Image style={styles.image} source={{uri: newAvatar}} />
+              <TouchableOpacity
+                onPress={async () => {
+                  const res = await DocumentPicker.pick({
+                    type: [DocumentPicker.types.images],
+                  });
+                  setValue('avatar', res.uri);
+                  changeAvatar(res.uri);
+                }}
+                style={styles.editArea}>
+                <Icon name={'edit'} size={20} color="#fff" />
+              </TouchableOpacity>
+            </View>
+          ) : null}
           {fields.map((el, index) => (
             <Controller
               control={control}
               key={index}
               render={({field: {onChange, onBlur, value}}) => (
                 <TextInput
-                  style={styles.input}
+                  style={
+                    el === 'avatar'
+                      ? [styles.input, {display: 'none'}]
+                      : styles.input
+                  }
                   onBlur={onBlur}
                   onChangeText={value => onChange(value)}
                   value={value}
@@ -87,6 +124,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     color: '#000',
   },
+  imageWrap: {
+    width: 100,
+    height: 100,
+    marginBottom: 10,
+    borderRadius: 50,
+    overflow: 'hidden',
+  },
+  editArea: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '40%',
+    backgroundColor: 'rgba(0,0,0,0.3)',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
   title: {
     textAlign: 'center',
     fontSize: 24,
@@ -99,6 +157,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modal: {
+    alignItems: 'center',
     width: '90%',
     padding: 20,
     margin: 20,
