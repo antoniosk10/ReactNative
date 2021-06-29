@@ -1,17 +1,52 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import {deleteItem} from './../redux/actions/actions';
+import {useDispatch, useSelector} from 'react-redux';
 
-const UserItem = ({item}) => (
-  <View style={styles.listItem}>
-    <View style={styles.imageWrap}>
-      <Image style={styles.image} source={{uri: item.avatar}} />
-    </View>
-    <View>
-      <Text style={styles.name}>{`${item.first_name} ${item.last_name}`}</Text>
-      <Text>{item.email}</Text>
-    </View>
-  </View>
-);
+const UserItem = ({item, changeModalWindow}) => {
+  const dispatch = useDispatch();
+  const fields = useSelector(state => state.fieldsUsers);
+  return (
+    <TouchableOpacity
+      onPress={() =>
+        changeModalWindow({
+          visible: true,
+          item: item,
+          typeList: 'usersList',
+          fields: fields,
+        })
+      }
+      onLongPress={() =>
+        Alert.alert('Delete item', 'Are you shure?', [
+          {
+            text: 'Cancel',
+          },
+          {
+            text: 'OK',
+            onPress: () => dispatch(deleteItem('usersList', item.id)),
+          },
+        ])
+      }>
+      <View style={styles.listItem}>
+        <View style={styles.imageWrap}>
+          <Image style={styles.image} source={{uri: item.avatar}} />
+        </View>
+        <View>
+          <Text
+            style={styles.name}>{`${item.first_name} ${item.last_name}`}</Text>
+          <Text>{item.email}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   imageWrap: {

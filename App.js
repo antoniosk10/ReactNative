@@ -1,5 +1,5 @@
 import React from 'react';
-import PageList from './src/components/PageList';
+import PageApp from './src/components/PageApp';
 import {NavigationContainer} from '@react-navigation/native';
 import {Provider} from 'react-redux';
 import store from './src/redux/store/store';
@@ -19,7 +19,7 @@ const App = () => {
           }}>
           <Stack.Screen name="Preload" component={Preload} />
           <Stack.Screen name="Auth" component={PageAuth} />
-          <Stack.Screen name="List" component={PageList} />
+          <Stack.Screen name="List" component={PageApp} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

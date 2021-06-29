@@ -1,15 +1,43 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {deleteItem} from './../redux/actions/actions';
 
-const UnknownItem = ({item}) => (
-  <View style={styles.listItem}>
-    <View style={[styles.colorWrap, {backgroundColor: item.color}]} />
-    <View>
-      <Text style={styles.title}>{item.name}</Text>
-      <Text>{`${item.pantone_value} / ${item.year}`}</Text>
-    </View>
-  </View>
-);
+const UnknownItem = ({item, changeModalWindow}) => {
+  const dispatch = useDispatch();
+  const fields = useSelector(state => state.fieldsUnknown);
+
+  return (
+    <TouchableOpacity
+      onPress={() =>
+        changeModalWindow({
+          visible: true,
+          item: item,
+          typeList: 'unknownList',
+          fields: fields,
+        })
+      }
+      onLongPress={() =>
+        Alert.alert('Delete item', 'Are you shure?', [
+          {
+            text: 'Cancel',
+          },
+          {
+            text: 'OK',
+            onPress: () => dispatch(deleteItem('unknownList', item.id)),
+          },
+        ])
+      }>
+      <View style={styles.listItem}>
+        <View style={[styles.colorWrap, {backgroundColor: item.color}]} />
+        <View>
+          <Text style={styles.title}>{item.name}</Text>
+          <Text>{`${item.pantone_value} / ${item.year}`}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   colorWrap: {

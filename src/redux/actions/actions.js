@@ -7,6 +7,9 @@ import {
   NEXT_PAGE_UNKNOWN,
   END_PAGE_USERS,
   END_PAGE_UNKNOWN,
+  DELETE_ITEM,
+  EDIT_ITEM,
+  ADD_ITEM,
 } from './../../constants';
 
 export const putUsers = data => {
@@ -56,5 +59,37 @@ export const loadUnknown = () => {
 export const nextPageUnknown = () => {
   return {
     type: NEXT_PAGE_UNKNOWN,
+  };
+};
+
+export const deleteItem = (typeList, id) => {
+  return {
+    type: DELETE_ITEM,
+    payload: {
+      id,
+      typeList,
+    },
+  };
+};
+
+export const editItem = (typeList, id, data) => {
+  return {
+    type: EDIT_ITEM,
+    payload: {
+      id,
+      typeList,
+      data,
+    },
+  };
+};
+
+export const addItem = (typeList, data, fields) => {
+  return {
+    type: ADD_ITEM,
+    payload: {
+      typeList,
+      data,
+      fields,
+    },
   };
 };
