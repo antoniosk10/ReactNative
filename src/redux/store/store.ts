@@ -2,9 +2,10 @@ import {createStore, applyMiddleware} from 'redux';
 import reducer from '../reducers/reducer';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from '../saga';
+import {RootState} from './types';
 const sagaMiddleware = createSagaMiddleware();
 
-const initialStore = {
+const initialStore: RootState = {
   usersList: [],
   unknownList: [],
   pageUsersList: 1,
@@ -15,7 +16,11 @@ const initialStore = {
   fieldsUnknown: ['color', 'name', 'pantone_value', 'year'],
 };
 
-let store = createStore(reducer, initialStore, applyMiddleware(sagaMiddleware));
+const store = createStore(
+  reducer,
+  initialStore,
+  applyMiddleware(sagaMiddleware),
+);
 
 sagaMiddleware.run(rootSaga);
 

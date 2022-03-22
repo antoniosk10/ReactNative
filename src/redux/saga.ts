@@ -1,4 +1,4 @@
-import {LOAD_USERS, LOAD_UNKNOWN} from './../constants';
+import {LOAD_USERS, LOAD_UNKNOWN} from '../constants/constants';
 import {put, takeEvery, call, all} from 'redux-saga/effects';
 import {
   putUsers,

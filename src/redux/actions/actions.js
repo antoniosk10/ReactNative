@@ -10,7 +10,7 @@ import {
   DELETE_ITEM,
   EDIT_ITEM,
   ADD_ITEM,
-} from './../../constants';
+} from '../../constants/constants';
 
 export const putUsers = data => {
   return {
@@ -83,13 +83,12 @@ export const editItem = (typeList, id, data) => {
   };
 };
 
-export const addItem = (typeList, data, fields) => {
+export const addItem = (typeList, data) => {
   return {
     type: ADD_ITEM,
     payload: {
       typeList,
       data,
-      fields,
     },
   };
 };

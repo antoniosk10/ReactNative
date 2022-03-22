@@ -11,7 +11,7 @@ import {
 import {useDispatch} from 'react-redux';
 import {useForm, Controller} from 'react-hook-form';
 import {editItem, addItem} from './../redux/actions/actions';
-import {DEFAULT_MODAL_SETTINGS} from './../constants';
+import {DEFAULT_MODAL_SETTINGS} from '../constants/constants';
 import IMAGE_NO_PHOTO from './../assets/image/no-photo.png';
 import Icon from 'react-native-vector-icons/Feather';
 import DocumentPicker from 'react-native-document-picker';
@@ -29,7 +29,7 @@ const ModalWindow = ({
     if (item) {
       dispatch(editItem(typeList, item.id, data));
     } else {
-      dispatch(addItem(typeList, data, fields));
+      dispatch(addItem(typeList, data));
     }
     changeModalWindow(DEFAULT_MODAL_SETTINGS);
   };
