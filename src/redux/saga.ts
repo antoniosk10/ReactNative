@@ -1,4 +1,4 @@
-import {LOAD_USERS, LOAD_UNKNOWN} from '../constants/constants';
+import {ACTION_TYPE} from '../constants/constants';
 import {put, takeEvery, call, all} from 'redux-saga/effects';
 import {
   putUsers,
@@ -25,11 +25,11 @@ export function* workerUnknown() {
 }
 
 export function* watcherUsers() {
-  yield takeEvery(LOAD_USERS, workerUsers);
+  yield takeEvery(ACTION_TYPE.LOAD_USERS, workerUsers);
 }
 
 export function* watcherUnknown() {
-  yield takeEvery(LOAD_UNKNOWN, workerUnknown);
+  yield takeEvery(ACTION_TYPE.LOAD_UNKNOWN, workerUnknown);
 }
 
 export default function* rootSaga() {

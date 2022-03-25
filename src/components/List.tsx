@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, FC} from 'react';
 import {
   Button,
   FlatList,
@@ -25,7 +25,7 @@ type ListProps = {
   typeData: string;
 };
 
-const List = ({typeData}: ListProps) => {
+const List: FC<ListProps> = ({typeData}: ListProps) => {
   const currentPage = useSelector((state: RootState) => {
     console.log(state);
     return typeData === 'users' ? state.pageUsersList : state.pageUnknownList;
