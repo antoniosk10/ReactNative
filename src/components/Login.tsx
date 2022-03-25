@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,9 +8,14 @@ import {
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {useNavigation} from '@react-navigation/native';
-import LoginAPI from './../api/LoginAPI';
+import LoginAPI from '../api/LoginAPI';
+import {CredentialInterface} from '../api/types';
 
-const Login = ({changePage}) => {
+type Props = {
+  changePage: (arg: string) => void;
+};
+
+const Login: FC<Props> = ({changePage}: Props) => {
   const {
     control,
     handleSubmit,
@@ -18,8 +23,9 @@ const Login = ({changePage}) => {
   } = useForm();
   const navigation = useNavigation();
 
-  const onSubmit = data => {
-    const body = {
+  const onSubmit = (data: CredentialInterface) => {
+    console.log(data);
+    const body: CredentialInterface = {
       email: data.Login,
       password: data.Password,
     };
@@ -29,7 +35,7 @@ const Login = ({changePage}) => {
   };
 
   return (
-    <>
+    <View>
       <Text style={styles.title}>Login</Text>
       <View>
         <Controller
@@ -95,7 +101,7 @@ const Login = ({changePage}) => {
           </Text>
         </TouchableOpacity>
       </View>
-    </>
+    </View>
   );
 };
 

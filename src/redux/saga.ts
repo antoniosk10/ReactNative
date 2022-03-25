@@ -18,6 +18,7 @@ export function* workerUsers() {
 
 export function* workerUnknown() {
   const data = yield call(fetchDataUnknown);
+  console.log(data);
   yield put(putUnknown(data.data.data));
   if (data.data.page === data.data.total_pages) {
     yield put(endPageUnknown());

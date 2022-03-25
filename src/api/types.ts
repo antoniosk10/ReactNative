@@ -13,3 +13,10 @@ export interface DataFetchColor {
   pantone_value: string;
   year: string;
 }
+
+export interface CredentialInterface {
+  email?: string;
+  Login?: string;
+  password?: string;
+  Password?: string;
+}

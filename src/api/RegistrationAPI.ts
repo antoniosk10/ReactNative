@@ -1,8 +1,9 @@
 import axios from 'axios';
 import {Alert} from 'react-native';
 import {setItemStorage} from './AsyncStorage';
+import {CredentialInterface} from './types';
 
-const RegistrationAPI = (body, callback) => {
+const RegistrationAPI = (body: CredentialInterface, callback: () => void) => {
   axios
     .post('https://reqres.in/api/register', body)
     .then(function (response) {

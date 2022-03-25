@@ -20,25 +20,29 @@ import {DEFAULT_MODAL_SETTINGS} from '../constants/constants';
 import ModalWindow from './ModalWindow';
 import UnknownItem from './UnknownItem';
 import UserItem from './UserItem';
+import {DataFetchUser, DataFetchColor} from './../api/types';
 
 type ListProps = {
   typeData: string;
 };
 
 const List: FC<ListProps> = ({typeData}: ListProps) => {
-  const currentPage = useSelector((state: RootState) => {
-    console.log(state);
+  const currentPage: number = useSelector((state: RootState): number => {
     return typeData === 'users' ? state.pageUsersList : state.pageUnknownList;
   });
-  const listData = useSelector((state: RootState) => {
-    return typeData === 'users' ? state.usersList : state.unknownList;
-  });
-  const isHideBtn = useSelector((state: RootState) => {
+  const listData: DataFetchUser[] | DataFetchColor[] = useSelector(
+    (state: RootState): DataFetchUser[] | DataFetchColor[] => {
+      return typeData === 'users' ? state.usersList : state.unknownList;
+    },
+  );
+  const isHideBtn: boolean = useSelector((state: RootState): boolean => {
     return typeData === 'users' ? state.isEndUsersList : state.isEndUnknownList;
   });
-  const currentFiedsList = useSelector((state: RootState) => {
-    return typeData === 'users' ? state.fieldsUsers : state.fieldsUnknown;
-  });
+  const currentFieldsList: Array<string> = useSelector(
+    (state: RootState): Array<string> => {
+      return typeData === 'users' ? state.fieldsUsers : state.fieldsUnknown;
+    },
+  );
   const dispatch = useDispatch();
   const [modalWindowSettings, changeModalWindow] = useState(
     DEFAULT_MODAL_SETTINGS,
@@ -64,7 +68,7 @@ const List: FC<ListProps> = ({typeData}: ListProps) => {
               visible: true,
               item: null,
               typeList: typeData === 'users' ? 'usersList' : 'unknownList',
-              fields: currentFiedsList,
+              fields: currentFieldsList,
             })
           }>
           <Icon name={'plus-circle'} size={30} color="#fff" />
@@ -72,7 +76,7 @@ const List: FC<ListProps> = ({typeData}: ListProps) => {
       </View>
 
       <FlatList
-        data={listData}
+        data={listData as ReadonlyArray<DataFetchUser | DataFetchColor>}
         renderItem={({item}) =>
           typeData === 'users' ? (
             <UserItem item={item} changeModalWindow={changeModalWindow} />
@@ -98,7 +102,7 @@ const List: FC<ListProps> = ({typeData}: ListProps) => {
       <ModalWindow
         typeList={modalWindowSettings.typeList}
         item={modalWindowSettings.item}
-        modalVisible={modalWindowSettings.visible}
+        visible={modalWindowSettings.visible}
         changeModalWindow={changeModalWindow}
         fields={modalWindowSettings.fields}
       />

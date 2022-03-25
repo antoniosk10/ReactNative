@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, FC} from 'react';
 import {StyleSheet, TouchableOpacity, View, Text, Image} from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import Icon from 'react-native-vector-icons/Feather';
 
-const Camera = () => {
+const Camera: FC = () => {
   const [cameraMode, turnMode] = useState(false);
   const [photoUri, setUri] = useState('');
 
-  const takePicture = async function (camera) {
+  const takePicture = async function (camera: RNCamera) {
     const options = {quality: 0.5, base64: true};
     const data = await camera.takePictureAsync(options);
     setUri(data.uri);

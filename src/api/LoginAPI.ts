@@ -1,8 +1,9 @@
 import axios from 'axios';
 import {Alert} from 'react-native';
 import {setItemStorage} from './AsyncStorage';
+import {CredentialInterface} from './types';
 
-const LoginAPI = (body, callback) => {
+const LoginAPI = (body: CredentialInterface, callback: () => void) => {
   axios
     .post('https://reqres.in/api/login', body)
     .then(function (response) {

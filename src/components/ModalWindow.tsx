@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, FC} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,16 +10,21 @@ import {
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useForm, Controller} from 'react-hook-form';
-import {editItem, addItem} from './../redux/actions/actions';
+import {editItem, addItem} from '../redux/actions/actions';
 import {DEFAULT_MODAL_SETTINGS} from '../constants/constants';
 import IMAGE_NO_PHOTO from './../assets/image/no-photo.png';
 import Icon from 'react-native-vector-icons/Feather';
 import DocumentPicker from 'react-native-document-picker';
+import {SettingsDefault} from './../constants/types';
 
-const ModalWindow = ({
+interface Props extends SettingsDefault {
+  changeModalWindow: (args: SettingsDefault) => void;
+}
+
+const ModalWindow: FC<Props> = ({
   typeList,
   item,
-  modalVisible,
+  visible,
   changeModalWindow,
   fields,
 }) => {
@@ -62,7 +67,7 @@ const ModalWindow = ({
     <Modal
       animationType="fade"
       transparent={true}
-      visible={modalVisible}
+      visible={visible}
       onRequestClose={() => {
         changeModalWindow(DEFAULT_MODAL_SETTINGS);
       }}>
