@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  SafeAreaView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {useDispatch, useSelector} from 'react-redux';
@@ -58,63 +59,65 @@ const List: FC<ListProps> = ({typeData}: ListProps) => {
   }, [currentPage, dispatch, typeData]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.titleWrap}>
-        <Text style={styles.title}>
-          {typeData === 'users' ? 'My Friends' : 'My Colors'}
-        </Text>
-        <TouchableOpacity
-          style={styles.addBtn}
-          onPress={() =>
-            changeModalWindow({
-              visible: true,
-              item: null,
-              typeList: typeData === 'users' ? 'usersList' : 'unknownList',
-              fields: currentFieldsList,
-            })
-          }>
-          <Icon name={'plus-circle'} size={30} color="#fff" />
-        </TouchableOpacity>
-      </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
+        <View style={styles.titleWrap}>
+          <Text style={styles.title}>
+            {typeData === 'users' ? 'My Friends' : 'My Colors'}
+          </Text>
+          <TouchableOpacity
+            style={styles.addBtn}
+            onPress={() =>
+              changeModalWindow({
+                visible: true,
+                item: null,
+                typeList: typeData === 'users' ? 'usersList' : 'unknownList',
+                fields: currentFieldsList,
+              })
+            }>
+            <Icon name={'plus-circle'} size={30} color="#fff" />
+          </TouchableOpacity>
+        </View>
 
-      <FlatList
-        data={listData as ReadonlyArray<DataFetchUser | DataFetchColor>}
-        renderItem={({item}) =>
-          typeData === 'users' ? (
-            <UserItem
-              item={item as DataFetchUser}
-              changeModalWindow={changeModalWindow}
-            />
-          ) : (
-            <UnknownItem
-              item={item as DataFetchColor}
-              changeModalWindow={changeModalWindow}
-            />
-          )
-        }
-        keyExtractor={item => `${typeData}_${item.id}`}
-        style={styles.list}
-        ListFooterComponent={
-          isHideBtn ? null : (
-            <Button
-              onPress={() => {
-                typeData === 'users'
-                  ? dispatch(nextPageUsers())
-                  : dispatch(nextPageUnknown());
-              }}
-              title="Show More"
-            />
-          )
-        }
-      />
-      <ModalWindow
-        typeList={modalWindowSettings.typeList}
-        item={modalWindowSettings.item}
-        visible={modalWindowSettings.visible}
-        changeModalWindow={changeModalWindow}
-        fields={modalWindowSettings.fields}
-      />
-    </View>
+        <FlatList
+          data={listData as ReadonlyArray<DataFetchUser | DataFetchColor>}
+          renderItem={({item}) =>
+            typeData === 'users' ? (
+              <UserItem
+                item={item as DataFetchUser}
+                changeModalWindow={changeModalWindow}
+              />
+            ) : (
+              <UnknownItem
+                item={item as DataFetchColor}
+                changeModalWindow={changeModalWindow}
+              />
+            )
+          }
+          keyExtractor={item => `${typeData}_${item.id}`}
+          style={styles.list}
+          ListFooterComponent={
+            isHideBtn ? null : (
+              <Button
+                onPress={() => {
+                  typeData === 'users'
+                    ? dispatch(nextPageUsers())
+                    : dispatch(nextPageUnknown());
+                }}
+                title="Show More"
+              />
+            )
+          }
+        />
+        <ModalWindow
+          typeList={modalWindowSettings.typeList}
+          item={modalWindowSettings.item}
+          visible={modalWindowSettings.visible}
+          changeModalWindow={changeModalWindow}
+          fields={modalWindowSettings.fields}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 

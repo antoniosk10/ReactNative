@@ -108,6 +108,7 @@ const Login: FC<Props> = ({changePage}) => {
 const styles = StyleSheet.create({
   input: {
     width: '100%',
+    height: 30,
     backgroundColor: '#fff',
     borderRadius: 10,
     marginBottom: 10,
