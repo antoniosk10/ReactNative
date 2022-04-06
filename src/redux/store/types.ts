@@ -7,6 +7,6 @@ export type RootState = {
   pageUnknownList: number;
   isEndUsersList: boolean;
   isEndUnknownList: boolean;
-  fieldsUsers: Array<string>;
-  fieldsUnknown: Array<string>;
+  fieldsUsers: Array<keyof DataFetchUser>;
+  fieldsUnknown: Array<keyof DataFetchColor>;
 };

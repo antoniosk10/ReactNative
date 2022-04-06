@@ -1,14 +1,14 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {getItemStorage} from './../api/AsyncStorage';
+import {getItemStorage} from '../api/AsyncStorage';
 import LottieView from 'lottie-react-native';
 
 const token = getItemStorage('token');
 
-const Preload = () => {
+const Preload: FC = () => {
   const navigation = useNavigation();
 
-  function openPage() {
+  function openPage(): void {
     token.then(data =>
       data ? navigation.navigate('List') : navigation.navigate('Auth'),
     );

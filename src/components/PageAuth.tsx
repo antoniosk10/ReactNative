@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, FC} from 'react';
 import {StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Login from './Login';
 import Registration from './Registration';
+import {AuthStatus} from './types';
 
-const PageAuth = () => {
-  const [page, changePage] = useState('login');
+const PageAuth: FC = () => {
+  const [page, changePage] = useState<AuthStatus>('login');
 
   return (
     <LinearGradient

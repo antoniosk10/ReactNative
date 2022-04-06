@@ -7,6 +7,7 @@ import {
   Modal,
   TextInput,
   Image,
+  ImageSourcePropType,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useForm, Controller} from 'react-hook-form';
@@ -16,7 +17,8 @@ import IMAGE_NO_PHOTO from './../assets/image/no-photo.png';
 import Icon from 'react-native-vector-icons/Feather';
 import DocumentPicker from 'react-native-document-picker';
 import {SettingsDefault} from './../constants/types';
-
+import {PayloadNewItem, PayloadEditItem} from '../redux/actions/types';
+import {DataFetchUser} from '../api/types';
 interface Props extends SettingsDefault {
   changeModalWindow: (args: SettingsDefault) => void;
 }
@@ -30,24 +32,26 @@ const ModalWindow: FC<Props> = ({
 }) => {
   const {control, handleSubmit, setValue} = useForm();
   const dispatch = useDispatch();
-  const onSubmit = data => {
+  const onSubmit = (data: PayloadNewItem | PayloadEditItem) => {
     if (item) {
-      dispatch(editItem(typeList, item.id, data));
+      dispatch(editItem(typeList, item.id, data as PayloadEditItem));
     } else {
-      dispatch(addItem(typeList, data));
+      dispatch(addItem(typeList, data as PayloadNewItem));
     }
     changeModalWindow(DEFAULT_MODAL_SETTINGS);
   };
-  const imageNoPhotoUri = Image.resolveAssetSource(IMAGE_NO_PHOTO).uri;
+  const imageNoPhotoUri = Image.resolveAssetSource(
+    IMAGE_NO_PHOTO as ImageSourcePropType,
+  ).uri;
   const [newAvatar, changeAvatar] = useState(imageNoPhotoUri);
 
   useEffect(() => {
-    fields.map(el => {
+    fields.forEach(el => {
       if (item) {
         if (el === 'avatar') {
           setValue(el, newAvatar);
         } else {
-          setValue(el, item[el].toString());
+          setValue(el, item[el as keyof typeof item].toString());
         }
       } else {
         if (el === 'avatar') {
@@ -60,7 +64,7 @@ const ModalWindow: FC<Props> = ({
   });
 
   useEffect(() => {
-    changeAvatar(item ? item.avatar : imageNoPhotoUri);
+    changeAvatar(item ? (item as DataFetchUser).avatar : imageNoPhotoUri);
   }, [changeAvatar, item, imageNoPhotoUri]);
 
   return (

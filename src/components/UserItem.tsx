@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,12 +7,20 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import {deleteItem} from './../redux/actions/actions';
+import {deleteItem} from '../redux/actions/actions';
 import {useDispatch, useSelector} from 'react-redux';
+import {DataFetchUser} from '../api/types';
+import {RootState} from '../redux/store/types';
+import {SettingsDefault} from './../constants/types';
 
-const UserItem = ({item, changeModalWindow}) => {
+type Props = {
+  changeModalWindow: (args: SettingsDefault) => void;
+  item: DataFetchUser;
+};
+
+const UserItem: FC<Props> = ({item, changeModalWindow}) => {
   const dispatch = useDispatch();
-  const fields = useSelector(state => state.fieldsUsers);
+  const fields = useSelector((state: RootState) => state.fieldsUsers);
   return (
     <TouchableOpacity
       onPress={() =>

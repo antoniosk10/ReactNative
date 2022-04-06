@@ -9,13 +9,14 @@ import {
 import {useForm, Controller} from 'react-hook-form';
 import {useNavigation} from '@react-navigation/native';
 import LoginAPI from '../api/LoginAPI';
-import {CredentialInterface} from '../api/types';
+import {LoginInterface, LoginAPIInterface} from '../api/types';
+import {AuthStatus} from './types';
 
 type Props = {
-  changePage: (arg: string) => void;
+  changePage: (arg: AuthStatus) => void;
 };
 
-const Login: FC<Props> = ({changePage}: Props) => {
+const Login: FC<Props> = ({changePage}) => {
   const {
     control,
     handleSubmit,
@@ -23,9 +24,8 @@ const Login: FC<Props> = ({changePage}: Props) => {
   } = useForm();
   const navigation = useNavigation();
 
-  const onSubmit = (data: CredentialInterface) => {
-    console.log(data);
-    const body: CredentialInterface = {
+  const onSubmit = (data: LoginAPIInterface) => {
+    const body: LoginInterface = {
       email: data.Login,
       password: data.Password,
     };

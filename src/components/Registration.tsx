@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, FC} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,20 +8,26 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
-import RegistrationAPI from './../api/RegistrationAPI';
+import RegistrationAPI from '../api/RegistrationAPI';
 import {useNavigation} from '@react-navigation/native';
+import {AuthStatus} from './types';
+import {LoginInterface, LoginAPIInterface} from '../api/types';
 
-const Registration = ({changePage}) => {
+type Props = {
+  changePage: (arg: AuthStatus) => void;
+};
+
+const Registration: FC<Props> = ({changePage}) => {
   const {
     control,
     handleSubmit,
     formState: {errors},
   } = useForm();
   const navigation = useNavigation();
-  const [errorPass, changeErrorPass] = useState(false);
+  const [errorPass, changeErrorPass] = useState<boolean | string>(false);
 
-  const onSubmit = data => {
-    const body = {
+  const onSubmit = (data: LoginAPIInterface) => {
+    const body: LoginInterface = {
       email: data.Login,
       password: data.Password,
     };

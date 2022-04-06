@@ -1,11 +1,21 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {deleteItem} from './../redux/actions/actions';
+import {deleteItem} from '../redux/actions/actions';
+import {SettingsDefault} from './../constants/types';
+import {DataFetchColor} from '../api/types';
+import {RootState} from '../redux/store/types';
 
-const UnknownItem = ({item, changeModalWindow}) => {
+type Props = {
+  changeModalWindow: (args: SettingsDefault) => void;
+  item: DataFetchColor;
+};
+
+const UnknownItem: FC<Props> = ({item, changeModalWindow}) => {
   const dispatch = useDispatch();
-  const fields = useSelector(state => state.fieldsUnknown);
+  const fields: RootState['fieldsUnknown'] = useSelector(
+    (state: RootState) => state.fieldsUnknown,
+  );
 
   return (
     <TouchableOpacity

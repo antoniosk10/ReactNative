@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import List from './List';
 import Camera from './Camera';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Feather';
 
 const Tab = createBottomTabNavigator();
 
-const PageApp = () => (
+const PageApp: FC = () => (
   <Tab.Navigator
     initialRouteName="My Friends"
     screenOptions={({route}) => ({
@@ -19,6 +19,8 @@ const PageApp = () => (
               return 'command';
             case 'Camera':
               return 'camera';
+            default:
+              return 'align-justify';
           }
         };
         return <Icon name={getNameIcon()} size={20} color={color} />;

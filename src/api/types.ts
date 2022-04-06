@@ -1,3 +1,12 @@
+export interface DataAPI {
+  data: Array<DataFetchUser | DataFetchColor>;
+  page: number;
+  per_page: number;
+  support: {text: string; url: string};
+  total: number;
+  total_pages: number;
+}
+
 export interface DataFetchUser {
   id: number;
   avatar: string;
@@ -14,9 +23,13 @@ export interface DataFetchColor {
   year: string;
 }
 
-export interface CredentialInterface {
-  email?: string;
-  Login?: string;
-  password?: string;
-  Password?: string;
+export interface LoginAPIInterface {
+  Login: string;
+  Password: string;
+  PasswordConfirm?: string;
+}
+
+export interface LoginInterface {
+  email: string;
+  password: string;
 }

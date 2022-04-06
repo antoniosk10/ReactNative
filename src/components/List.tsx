@@ -38,8 +38,10 @@ const List: FC<ListProps> = ({typeData}: ListProps) => {
   const isHideBtn: boolean = useSelector((state: RootState): boolean => {
     return typeData === 'users' ? state.isEndUsersList : state.isEndUnknownList;
   });
-  const currentFieldsList: Array<string> = useSelector(
-    (state: RootState): Array<string> => {
+  const currentFieldsList: Array<
+    keyof DataFetchUser | keyof DataFetchColor
+  > = useSelector(
+    (state: RootState): Array<keyof DataFetchUser | keyof DataFetchColor> => {
       return typeData === 'users' ? state.fieldsUsers : state.fieldsUnknown;
     },
   );
@@ -79,9 +81,15 @@ const List: FC<ListProps> = ({typeData}: ListProps) => {
         data={listData as ReadonlyArray<DataFetchUser | DataFetchColor>}
         renderItem={({item}) =>
           typeData === 'users' ? (
-            <UserItem item={item} changeModalWindow={changeModalWindow} />
+            <UserItem
+              item={item as DataFetchUser}
+              changeModalWindow={changeModalWindow}
+            />
           ) : (
-            <UnknownItem item={item} changeModalWindow={changeModalWindow} />
+            <UnknownItem
+              item={item as DataFetchColor}
+              changeModalWindow={changeModalWindow}
+            />
           )
         }
         keyExtractor={item => `${typeData}_${item.id}`}
